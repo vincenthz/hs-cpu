@@ -21,11 +21,10 @@ module System.Endian
     , toBE64
     ) where
 
-import Foreign.Marshal.Alloc
-import Foreign.Storable
-import Foreign.Ptr
+#include "MachDeps.h"
+
+import Unsafe.Coerce (unsafeCoerce)
 import Foreign.C.Types
-import System.IO.Unsafe (unsafePerformIO)
 import Data.Word
 
 -- | represent the CPU endianness
@@ -40,14 +39,11 @@ data Endianness = LittleEndian
 
 -- | return the system endianness
 getSystemEndianness :: Endianness
-getSystemEndianness = unsafePerformIO $ alloca $ \p ->
-    poke p cst >> peek (castPtr p) >>= return . check
-    where cst :: Word32
-          cst = 0x01000000
-          check :: Word8 -> Endianness
-          check x
-              | x == 0x01 = BigEndian 
-              | otherwise = LittleEndian
+#ifdef WORDS_BIGENDIAN
+getSystemEndianness = BigEndian
+#else
+getSystemEndianness = LittleEndian
+#endif
 
 -- | Convert from a big endian 64 bit value to the cpu endianness
 fromBE64 :: Word64 -> Word64
