@@ -23,7 +23,6 @@ module System.Endian
 
 #include "MachDeps.h"
 
-import Unsafe.Coerce (unsafeCoerce)
 import Foreign.C.Types
 import Data.Word
 
