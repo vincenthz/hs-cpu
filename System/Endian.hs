@@ -86,5 +86,5 @@ swap32 = fromIntegral . c_swap32 . fromIntegral
 swap64 :: Word64 -> Word64
 swap64 = fromIntegral . c_swap64 . fromIntegral
 
-foreign import ccall safe "bitfn_swap32" c_swap32 :: CUInt -> CUInt
-foreign import ccall safe "bitfn_swap64" c_swap64 :: CULLong -> CULLong
+foreign import ccall unsafe "bitfn_swap32" c_swap32 :: CUInt -> CUInt
+foreign import ccall unsafe "bitfn_swap64" c_swap64 :: CULLong -> CULLong
