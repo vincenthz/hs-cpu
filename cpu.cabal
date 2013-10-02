@@ -1,6 +1,6 @@
 Name:                cpu
 Version:             0.1.1
-Description:         
+Description:
     Lowlevel cpu routines to get basic properties of the cpu platform, like endianness and architecture.
 License:             BSD3
 License-file:        LICENSE
@@ -21,6 +21,7 @@ Flag executable
 
 Library
   Build-Depends:     base >= 3 && < 5
+                   , bits-extras
   Exposed-modules:   System.Cpuid
                      System.Endian
                      System.Arch

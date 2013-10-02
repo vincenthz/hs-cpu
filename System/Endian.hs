@@ -23,7 +23,7 @@ module System.Endian
 
 #include "MachDeps.h"
 
-import Foreign.C.Types
+import Data.Bits.Extras
 import Data.Word
 
 -- | represent the CPU endianness
@@ -46,19 +46,19 @@ getSystemEndianness = LittleEndian
 
 -- | Convert from a big endian 64 bit value to the cpu endianness
 fromBE64 :: Word64 -> Word64
-fromBE64 = if getSystemEndianness == BigEndian then id else swap64
+fromBE64 = if getSystemEndianness == BigEndian then id else byteSwap
 
 -- | Convert from a little endian 64 bit value to the cpu endianness
 fromLE64 :: Word64 -> Word64
-fromLE64 = if getSystemEndianness == LittleEndian then id else swap64
+fromLE64 = if getSystemEndianness == LittleEndian then id else byteSwap
 
 -- | Convert from a big endian 32 bit value to the cpu endianness
 fromBE32 :: Word32 -> Word32
-fromBE32 = if getSystemEndianness == BigEndian then id else swap32
+fromBE32 = if getSystemEndianness == BigEndian then id else byteSwap
 
 -- | Convert from a little endian 32 bit value to the cpu endianness
 fromLE32 :: Word32 -> Word32
-fromLE32 = if getSystemEndianness == LittleEndian then id else swap32
+fromLE32 = if getSystemEndianness == LittleEndian then id else byteSwap
 
 -- | Convert a 64 bit value in cpu endianess to big endian
 toBE64 :: Word64 -> Word64
@@ -75,16 +75,3 @@ toBE32 = fromBE32
 -- | Convert a 32 bit value in cpu endianess to little endian
 toLE32 :: Word32 -> Word32
 toLE32 = fromLE32
-
--- | Transform a 32 bit value bytes from a.b.c.d to d.c.b.a
-{-# INLINE swap32 #-}
-swap32 :: Word32 -> Word32
-swap32 = fromIntegral . c_swap32 . fromIntegral
-
--- | Transform a 64 bit value bytes from a.b.c.d.e.f.g.h to h.g.f.e.d.c.b.a
-{-# INLINE swap64 #-}
-swap64 :: Word64 -> Word64
-swap64 = fromIntegral . c_swap64 . fromIntegral
-
-foreign import ccall safe "bitfn_swap32" c_swap32 :: CUInt -> CUInt
-foreign import ccall safe "bitfn_swap64" c_swap64 :: CULLong -> CULLong
