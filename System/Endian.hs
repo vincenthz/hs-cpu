@@ -76,6 +76,18 @@ toBE32 = fromBE32
 toLE32 :: Word32 -> Word32
 toLE32 = fromLE32
 
+#if MIN_VERSION_base(4,7,0)
+
+-- | Transform a 32 bit value bytes from a.b.c.d to d.c.b.a
+swap32 :: Word32 -> Word32
+swap32 = byteSwap32
+
+-- | Transform a 64 bit value bytes from a.b.c.d.e.f.g.h to h.g.f.e.d.c.b.a
+swap64 :: Word64 -> Word64
+swap64 = byteSwap64
+
+#else
+
 -- | Transform a 32 bit value bytes from a.b.c.d to d.c.b.a
 {-# INLINE swap32 #-}
 swap32 :: Word32 -> Word32
@@ -88,3 +100,5 @@ swap64 = fromIntegral . c_swap64 . fromIntegral
 
 foreign import ccall unsafe "bitfn_swap32" c_swap32 :: CUInt -> CUInt
 foreign import ccall unsafe "bitfn_swap64" c_swap64 :: CULLong -> CULLong
+
+#endif
