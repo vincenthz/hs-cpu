@@ -52,3 +52,8 @@ uint64_t bitfn_swap64(uint64_t a)
 	        (((uint64_t) bitfn_swap32((uint32_t) a)) << 32);
 }
 #endif
+
+uint16_t bitfn_swap16(uint16_t a)
+{
+  return (a << 8) | (a >> 8);
+}
