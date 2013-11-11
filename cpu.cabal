@@ -14,6 +14,7 @@ stability:           experimental
 Cabal-Version:       >=1.8
 Homepage:            http://github.com/vincenthz/hs-cpu
 data-files:          README.md
+Extra-source-files:  cbits/endian.c
 
 Flag executable
   Description:       Build the executable
@@ -26,7 +27,8 @@ Library
                      System.Arch
   ghc-options:       -Wall
 
-  C-sources:   cbits/endian.c
+  if impl(ghc < 7.8):
+    C-sources:   cbits/endian.c
 
   if arch(i386)
     Cpp-options: -DARCH_X86
